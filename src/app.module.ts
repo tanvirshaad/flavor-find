@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { User } from './users/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Restaurant } from './restaurants/restaurant.entity';
+import { RestaurantsModule } from './restaurants/restaurants.module';
 
 @Module({
   imports: [UsersModule, TypeOrmModule.forRoot(
@@ -14,10 +16,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       username: 'postgres',
       password: 'root',
       database: 'flavor-find',
-      entities: [User],
+      entities: [User, Restaurant],
       synchronize: true,
     }
-  )],
+  ),
+    UsersModule,
+    RestaurantsModule,
+],
   controllers: [AppController],
   providers: [AppService],
 })
