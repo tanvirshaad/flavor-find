@@ -10,4 +10,16 @@ export class CreateReviewDto {
     
         @IsOptional()
         createdDate?: Date;
+        // @IsNumber()
+
+    // @IsNotEmpty()
+    // userId: number;
+
+    // @IsNumber()
+    // @IsNotEmpty()
+    // restaurantId: number;
+
+    // @IsNumber()
+    // @IsOptional()
+    // foodItemId?: number;
 }

@@ -44,8 +44,14 @@ export class ReviewsService {
         return this.reviewRepository.findOne({ where: { id } });
     }
 
-    public async updateReview(id: number, updateReviewDto: UpdateReviewDto){
-        const review = await this.getReviewById(id);
+    public async updateReview(reviewId: number, updateReviewDto: UpdateReviewDto){
+        const review = await this.reviewRepository.findOne({ 
+        where: { id: reviewId }
+    });
+    if(!review){
+        return null;
+    }
+    console.log(updateReviewDto);
         const updatedReview = this.reviewRepository.merge(review, updateReviewDto);
         return this.reviewRepository.save(updatedReview);
     }

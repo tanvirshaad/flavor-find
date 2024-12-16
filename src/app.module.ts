@@ -10,6 +10,8 @@ import { FoodItemsModule } from './food-items/food-items.module';
 import { FoodItem } from './food-items/food-items.entity';
 import { ReviewsModule } from './reviews/reviews.module';
 import { Review } from './reviews/review.entity';
+import { ReservationsModule } from './reservations/reservations.module';
+import { Reservation } from './reservations/reservation.entity';
 
 @Module({
   imports: [UsersModule, TypeOrmModule.forRoot(
@@ -20,14 +22,15 @@ import { Review } from './reviews/review.entity';
       username: 'postgres',
       password: 'root',
       database: 'flavor-find',
-      entities: [User, Restaurant, FoodItem, Review],
+      entities: [User, Restaurant, FoodItem, Review, Reservation],
       synchronize: true,
     }
   ),
     UsersModule,
     RestaurantsModule,
     FoodItemsModule,
-    ReviewsModule
+    ReviewsModule,
+    ReservationsModule
     
 ],
   controllers: [AppController],
