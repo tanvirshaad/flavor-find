@@ -41,3 +41,8 @@ export class UsersController {
 
 
 
+/*
+npm i
+npm install class-validator@0.14.1 class-transformer@0.5.1
+npm i typeorm@0.3.20 @nestjs/typeorm@10.0.2 pg@8.11.5
+*/
