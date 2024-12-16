@@ -6,6 +6,8 @@ import { User } from './users/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Restaurant } from './restaurants/restaurant.entity';
 import { RestaurantsModule } from './restaurants/restaurants.module';
+import { FoodItemsModule } from './food-items/food-items.module';
+import { FoodItem } from './food-items/food-items.entity';
 
 @Module({
   imports: [UsersModule, TypeOrmModule.forRoot(
@@ -16,12 +18,13 @@ import { RestaurantsModule } from './restaurants/restaurants.module';
       username: 'postgres',
       password: 'root',
       database: 'flavor-find',
-      entities: [User, Restaurant],
+      entities: [User, Restaurant, FoodItem],
       synchronize: true,
     }
   ),
     UsersModule,
     RestaurantsModule,
+    FoodItemsModule,
 ],
   controllers: [AppController],
   providers: [AppService],

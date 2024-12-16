@@ -1,5 +1,6 @@
+import { FoodItem } from "src/food-items/food-items.entity";
 import { User } from "src/users/user.entity";
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Restaurant {
@@ -34,4 +35,7 @@ export class Restaurant {
     // Foreign key for User
     @ManyToOne(() => User, (user) => user.restaurants)
     user: User;
+
+    @OneToMany(() => FoodItem, (foodItem) => foodItem.restaurant)
+    foodItems: FoodItem[];
 }
