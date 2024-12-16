@@ -19,5 +19,6 @@ export class CreateUserDto {
     createdAt?: Date;
     @IsString()
     status: string;
+    console.log(status)
 }
 // hello
