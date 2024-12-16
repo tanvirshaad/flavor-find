@@ -4,6 +4,8 @@ import { Repository } from "typeorm";
 import { User } from "../user.entity";
 import { CreateUserDto } from "../DTOs/create-user.dto";
 import { UpdateUserDto } from "../DTOs/update-user.dto";
+import e from "express";
+import { LoginDto } from "../DTOs/login.dto";
 
 @Injectable()
 export class UsersService {
@@ -36,5 +38,16 @@ export class UsersService {
     //delete user based on id
     public async deleteUser(id: number){
         return this.usersRepository.delete({ id });
+    }
+
+    public async login(loginDto: LoginDto){
+        const { username, password } = loginDto;
+        const user = await this.usersRepository.findOne({ where: { username, password } });
+        if(user){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }

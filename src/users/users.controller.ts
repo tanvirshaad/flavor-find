@@ -3,6 +3,7 @@ import { CreateUserDto } from './DTOs/create-user.dto';
 import { UsersService } from './Provider/users.service';
 import { GetUserDto } from './DTOs/get-user.dto';
 import { UpdateUserDto } from './DTOs/update-user.dto';
+import { LoginDto } from './DTOs/login.dto';
 
 @Controller('users')
 export class UsersController {
@@ -31,6 +32,10 @@ export class UsersController {
     @Get('/delete/:id')
     public deleteUser(@Param('id', ParseIntPipe) id: number) {
         return this.usersService.deleteUser(id);
+    }
+    @Post('/login')
+    public login(@Body() loginDto: LoginDto) {
+        return this.usersService.login(loginDto);
     }
 }
 
