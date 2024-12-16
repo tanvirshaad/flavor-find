@@ -12,7 +12,7 @@ export class FoodItemsController {
         console.log(typeof item);
         return this.foodItemsService.searchFoodItemByName(item);
     }
-
+    
     @Post()
     public createFoodItem(@Body() createFoodItemDto: CreateFoodItemDto, @Query('restaurantId', ParseIntPipe) restaurantId: number) {   
         return this.foodItemsService.createFoodItem(createFoodItemDto, restaurantId);
@@ -37,6 +37,6 @@ export class FoodItemsController {
     public deleteFoodItem(@Param('id', ParseIntPipe) id: number) {
         return this.foodItemsService.deleteFoodItem(id);
     }
-
+    
     
 }

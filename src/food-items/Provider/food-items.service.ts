@@ -4,6 +4,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { CreateFoodItemDto } from "../DTOs/create-foodItem.dto";
 import { Restaurant } from "src/restaurants/restaurant.entity";
 import { UpdateFoodItemDto } from "../DTOs/update-foodItem.dto";
+import { NotFoundException } from "@nestjs/common";
 
 export class FoodItemsService {
     constructor(
@@ -31,10 +32,20 @@ export class FoodItemsService {
     }
 
     public async createFoodItem(createFoodItemDto: CreateFoodItemDto, id:number){
-        createFoodItemDto.restaurantId = id;
-        const newFoodItem = this.foodItemsRepository.create(createFoodItemDto);
+        const restaurant = await this.restaurantRepository.findOne({ 
+        where: { id } 
+    });
+    
+    if (!restaurant) {
+        throw new NotFoundException(`Restaurant with ID ${id} not found`);
+    }
 
-        return this.foodItemsRepository.save(newFoodItem);
+    const newFoodItem = this.foodItemsRepository.create({
+        ...createFoodItemDto,
+        restaurant
+    });
+
+    return this.foodItemsRepository.save(newFoodItem);
     }
 
     public async getAllFoodItems(){

@@ -1,4 +1,5 @@
 import { Restaurant } from "src/restaurants/restaurant.entity";
+import { Review } from "src/reviews/review.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
@@ -23,4 +24,6 @@ export class User {
     status: string;
     @OneToMany(() => Restaurant, (restaurant) => restaurant.user)
     restaurants: Restaurant[];
+    @OneToMany(() => Review, (review) => review.user)
+    reviews: Review[];
 }

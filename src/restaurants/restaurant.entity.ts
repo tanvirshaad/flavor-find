@@ -1,4 +1,5 @@
 import { FoodItem } from "src/food-items/food-items.entity";
+import { Review } from "src/reviews/review.entity";
 import { User } from "src/users/user.entity";
 import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
@@ -26,10 +27,10 @@ export class Restaurant {
     createdAt: Date;
 
     @Column({ type: 'time' })
-    openingTime: string; // Example: "08:00:00"
+    openingTime: string; // "08:00:00"
 
     @Column({ type: 'time' })
-    closingTime: string; //example: 
+    closingTime: string; 
     
 
     // Foreign key for User
@@ -38,4 +39,7 @@ export class Restaurant {
 
     @OneToMany(() => FoodItem, (foodItem) => foodItem.restaurant)
     foodItems: FoodItem[];
+
+    @OneToMany(() => Review, (review) => review.restaurant)
+    reviews: Review[];
 }
