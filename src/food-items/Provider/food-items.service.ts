@@ -1,4 +1,4 @@
-import { Repository } from "typeorm";
+import { ILike, Like, Repository } from "typeorm";
 import { FoodItem } from "../food-items.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { CreateFoodItemDto } from "../DTOs/create-foodItem.dto";
@@ -12,6 +12,23 @@ export class FoodItemsService {
         @InjectRepository(Restaurant)
         private restaurantRepository: Repository<Restaurant>,
     ) {}
+
+    //search by food item name
+    public async searchFoodItemByName(item: string){
+        console.log(typeof item);
+        if (!item || item.trim() === '') {
+            return [];
+        }
+
+        console.log('Searching for item:', item);
+        console.log('Search term type:', typeof item);
+
+        return this.foodItemsRepository.find({
+            where: {
+                name: ILike(`%${item.trim()}%`),
+            },
+        });
+    }
 
     public async createFoodItem(createFoodItemDto: CreateFoodItemDto, id:number){
         createFoodItemDto.restaurantId = id;
@@ -37,5 +54,8 @@ export class FoodItemsService {
     public async deleteFoodItem(id: number){
         return this.foodItemsRepository.delete({ id });
     }
+
+    
+
 
 }
