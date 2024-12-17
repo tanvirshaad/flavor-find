@@ -14,7 +14,7 @@ export class FoodItemsService {
         private restaurantRepository: Repository<Restaurant>,
     ) {}
 
-    //search by food item name
+
     public async searchFoodItemByName(item: string){
         console.log(typeof item);
         if (!item || item.trim() === '') {

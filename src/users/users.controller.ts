@@ -37,6 +37,11 @@ export class UsersController {
     public login(@Body() loginDto: LoginDto) {
         return this.usersService.login(loginDto);
     }
+
+    @Post('/isAuth')
+    public isAuth(@Body() loginDto: LoginDto) {
+        return this.usersService.isAuth(loginDto.username, loginDto.password);
+    }
 }
 
 

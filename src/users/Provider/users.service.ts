@@ -50,4 +50,14 @@ export class UsersService {
             return false;
         }
     }
+
+    public async isAuth(username: string, password: string){
+        const user = await this.usersRepository.findOne({ where: { username, password } });
+        if(user){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 }

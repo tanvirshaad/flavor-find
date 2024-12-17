@@ -55,7 +55,9 @@ export class ReviewsController {
   }
 
   @Get('/delete/:id')
-  public deleteReview(id: number) {
+  public deleteReview(
+    @Param('id', ParseIntPipe) id: number
+  ) {
     return this.reviewsService.deleteReview(id);
   }
 }

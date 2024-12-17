@@ -1,4 +1,5 @@
 import { FoodItem } from "src/food-items/food-items.entity";
+import { Offer } from "src/offers/offer.entity";
 import { Reservation } from "src/reservations/reservation.entity";
 import { Review } from "src/reviews/review.entity";
 import { User } from "src/users/user.entity";
@@ -46,4 +47,8 @@ export class Restaurant {
 
     @OneToMany(() => Reservation, (reservation) => reservation.restaurant)
     reservations: Reservation[];
+
+    @OneToMany(() => Offer, (offer) => offer.restaurant)
+    offers: Offer[];
+
 }
