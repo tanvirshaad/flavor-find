@@ -9,7 +9,10 @@ import { Reservation } from 'src/reservations/reservation.entity';
 
 @Module({
   controllers: [RestaurantsController],
-  imports: [TypeOrmModule.forFeature([Restaurant, User, Reservation])],
+  imports: [
+    TypeOrmModule.forFeature([Restaurant, User, Reservation]),
+    UsersModule,
+  ],
   providers: [RestaurantsService],
   exports: [RestaurantsService],
 })

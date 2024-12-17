@@ -1,43 +1,60 @@
-import { InjectRepository } from "@nestjs/typeorm";
-import { Restaurant } from "../restaurant.entity";
-import { Repository } from "typeorm";
-import { CreateRestaurantDto } from "../DTOs/create-restaurant.dto";
-import { User } from "src/users/user.entity";
-import { UpdateRestaurantDto } from "../DTOs/update-restaurant.dto";
+import { InjectRepository } from '@nestjs/typeorm';
+import { Restaurant } from '../restaurant.entity';
+import { Repository } from 'typeorm';
+import { CreateRestaurantDto } from '../DTOs/create-restaurant.dto';
+import { User } from 'src/users/user.entity';
+import { UpdateRestaurantDto } from '../DTOs/update-restaurant.dto';
+import { UsersService } from 'src/users/Provider/users.service';
 
 export class RestaurantsService {
-    constructor(
-        @InjectRepository(Restaurant)
-        private restaurantRepository: Repository<Restaurant>,
-        @InjectRepository(User)
-        private usersRepository: Repository<User>,
-    ) {}
+  constructor(
+    @InjectRepository(Restaurant)
+    private restaurantRepository: Repository<Restaurant>,
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
+    private usersService: UsersService,
+  ) {}
 
-    public async createRestaurant(createRestaurantDto: CreateRestaurantDto, userId: number){
-        const user = await this.usersRepository.findOne({ where: { id: userId } });
-        createRestaurantDto.createdAt = new Date();
-        createRestaurantDto.userId = user.id;
-        let newRestaurant = this.restaurantRepository.create(createRestaurantDto);
-        newRestaurant = await this.restaurantRepository.save(newRestaurant);
-        return newRestaurant;
-    }
+  public async createRestaurant(
+    createRestaurantDto: CreateRestaurantDto,
+    userId: number,
+  ) {
+    const isLoggedIn = await this.usersService.isLoggedIn(userId);
+    if (!isLoggedIn) {
+      return 'You are not logged in';
+    } else {
+      const user = await this.usersRepository.findOne({
+        where: { id: userId },
+      });
 
-    public async getAllRestaurants(){
-        return this.restaurantRepository.find();
+      createRestaurantDto.createdAt = new Date();
+      createRestaurantDto.userId = user.id;
+      let newRestaurant = this.restaurantRepository.create(createRestaurantDto);
+      newRestaurant = await this.restaurantRepository.save(newRestaurant);
+      return newRestaurant;
     }
+  }
 
-    public async getRestaurantById(id: number){
-        return this.restaurantRepository.findOne({ where: { id } });
-    }
+  public async getAllRestaurants() {
+    return this.restaurantRepository.find();
+  }
 
-    public async updateRestaurant(id: number, updateRestaurantDto: UpdateRestaurantDto){
-        const restaurant = await this.getRestaurantById(id);
-        const updatedRestaurant = this.restaurantRepository.merge(restaurant, updateRestaurantDto);
-        return this.restaurantRepository.save(updatedRestaurant);
-        
-    }
-    public async deleteRestaurant(id: number){
-        return this.restaurantRepository.delete({ id });
-    }
+  public async getRestaurantById(id: number) {
+    return this.restaurantRepository.findOne({ where: { id } });
+  }
 
+  public async updateRestaurant(
+    id: number,
+    updateRestaurantDto: UpdateRestaurantDto,
+  ) {
+    const restaurant = await this.getRestaurantById(id);
+    const updatedRestaurant = this.restaurantRepository.merge(
+      restaurant,
+      updateRestaurantDto,
+    );
+    return this.restaurantRepository.save(updatedRestaurant);
+  }
+  public async deleteRestaurant(id: number) {
+    return this.restaurantRepository.delete({ id });
+  }
 }
