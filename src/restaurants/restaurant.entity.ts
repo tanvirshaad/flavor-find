@@ -1,9 +1,10 @@
 import { FoodItem } from "src/food-items/food-items.entity";
 import { Offer } from "src/offers/offer.entity";
 import { Reservation } from "src/reservations/reservation.entity";
+import { RestaurantRespond } from "src/restaurant-respond/restaurant-Respond.entity";
 import { Review } from "src/reviews/review.entity";
 import { User } from "src/users/user.entity";
-import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Restaurant {
@@ -44,6 +45,9 @@ export class Restaurant {
 
     @OneToMany(() => Review, (review) => review.restaurant)
     reviews: Review[];
+
+    @OneToMany(() => RestaurantRespond, (responod) => responod.restaurant)
+    responds: RestaurantRespond[];
 
     @OneToMany(() => Reservation, (reservation) => reservation.restaurant)
     reservations: Reservation[];

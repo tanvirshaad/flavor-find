@@ -1,7 +1,8 @@
 import { FoodItem } from "src/food-items/food-items.entity";
+import { RestaurantRespond } from "src/restaurant-respond/restaurant-Respond.entity";
 import { Restaurant } from "src/restaurants/restaurant.entity";
 import { User } from "src/users/user.entity";
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Review {
@@ -25,6 +26,9 @@ export class Review {
 
     @CreateDateColumn()
     createdDate: Date;
+
+    @OneToOne(() => RestaurantRespond, (respond) => respond.review, { cascade: true, nullable: true })
+    response: RestaurantRespond | null;
 }
 
 /*

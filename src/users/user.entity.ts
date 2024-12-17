@@ -1,4 +1,5 @@
 import { Reservation } from "src/reservations/reservation.entity";
+import { RestaurantRespond } from "src/restaurant-respond/restaurant-Respond.entity";
 import { Restaurant } from "src/restaurants/restaurant.entity";
 import { Review } from "src/reviews/review.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
@@ -27,6 +28,8 @@ export class User {
     restaurants: Restaurant[];
     @OneToMany(() => Review, (review) => review.user)
     reviews: Review[];
+    @OneToMany(() => RestaurantRespond, (responds) => responds.user)
+    responds: RestaurantRespond[];
     @OneToMany(() => Reservation, (reservation) => reservation.user)
     reservations: Reservation[];
 }
