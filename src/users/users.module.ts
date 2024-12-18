@@ -6,11 +6,20 @@ import { User } from './user.entity';
 import { Restaurant } from 'src/restaurants/restaurant.entity';
 import { Review } from 'src/reviews/review.entity';
 import { Reservation } from 'src/reservations/reservation.entity';
+import { Favourite } from 'src/favourites/favourite.entity';
 
 @Module({
   controllers: [UsersController],
   providers: [UsersService],
   exports: [UsersService],
-  imports: [TypeOrmModule.forFeature([User, Restaurant, Review, Reservation])],
+  imports: [
+    TypeOrmModule.forFeature([
+      User,
+      Restaurant,
+      Review,
+      Reservation,
+      Favourite,
+    ]),
+  ],
 })
 export class UsersModule {}

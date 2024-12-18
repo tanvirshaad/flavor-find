@@ -5,10 +5,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { FoodItem } from './food-items.entity';
 import { Restaurant } from 'src/restaurants/restaurant.entity';
 import { Review } from 'src/reviews/review.entity';
+import { Favourite } from 'src/favourites/favourite.entity';
 
 @Module({
   controllers: [FoodItemsController],
-  imports: [TypeOrmModule.forFeature([FoodItem, Restaurant, Review])],
+  imports: [
+    TypeOrmModule.forFeature([FoodItem, Restaurant, Review, Favourite]),
+  ],
   providers: [FoodItemsService],
 })
 export class FoodItemsModule {}

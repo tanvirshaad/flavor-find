@@ -1,3 +1,4 @@
+import { Favourite } from 'src/favourites/favourite.entity';
 import { Reservation } from 'src/reservations/reservation.entity';
 import { Restaurant } from 'src/restaurants/restaurant.entity';
 import { Review } from 'src/reviews/review.entity';
@@ -32,4 +33,6 @@ export class User {
   reviews: Review[];
   @OneToMany(() => Reservation, (reservation) => reservation.user)
   reservations: Reservation[];
+  @OneToMany(() => Favourite, (favourite) => favourite.user)
+  favourites: Favourite[];
 }
