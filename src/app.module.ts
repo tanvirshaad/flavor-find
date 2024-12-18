@@ -12,6 +12,11 @@ import { ReviewsModule } from './reviews/reviews.module';
 import { Review } from './reviews/review.entity';
 import { ReservationsModule } from './reservations/reservations.module';
 import { Reservation } from './reservations/reservation.entity';
+import { OffersModule } from './offers/offers.module';
+import { Offer } from './offers/offer.entity';
+import { RestaurantRespondController } from './restaurant-respond/restaurant-respond.controller';
+import { RestaurantRespondModule } from './restaurant-respond/restaurant-respond.module';
+import { RestaurantRespond } from './restaurant-respond/restaurant-Respond.entity';
 import { FavouritesModule } from './favourites/favourites.module';
 import { Favourite } from './favourites/favourite.entity';
 
@@ -25,7 +30,16 @@ import { Favourite } from './favourites/favourite.entity';
       username: 'postgres',
       password: 'root',
       database: 'flavor-find',
-      entities: [User, Restaurant, FoodItem, Review, Reservation, Favourite],
+      entities: [
+        User,
+        Restaurant,
+        FoodItem,
+        Review,
+        Reservation,
+        Offer,
+        Favourite,
+        RestaurantRespond,
+      ],
       synchronize: true,
     }),
     UsersModule,
@@ -33,7 +47,9 @@ import { Favourite } from './favourites/favourite.entity';
     FoodItemsModule,
     ReviewsModule,
     ReservationsModule,
+    OffersModule,
     FavouritesModule,
+    RestaurantRespondModule,
   ],
   controllers: [AppController],
   providers: [AppService],

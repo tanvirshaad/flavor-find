@@ -21,6 +21,16 @@ export class RestaurantsController {
     public getRestaurantById(@Param('id', ParseIntPipe) id: number) {
         return this.restaurantsService.getRestaurantById(id);
     }    
+    // to view the reviews of a the specific restaurant only
+    @Get('/restaurantReviews/:id')
+    public getRestaurantReviews(@Param('id', ParseIntPipe) id: number) {
+        return this.restaurantsService.getRestaurantReviews(id);
+    }  
+
+    @Get('/reservation/:id')
+    public changeRestaurantReservation(@Param('id', ParseIntPipe) id: number , @Query('reservationId', ParseIntPipe) reservationId: number, @Query('newStatus') newStatus: string) {
+        return this.restaurantsService.changeRestaurantReservation(id, reservationId, newStatus);
+    }  
 
     @Put('/:id')
     public updateRestaurant(@Param('id', ParseIntPipe) id: number, @Body() updateRestaurantDto: UpdateRestaurantDto) {

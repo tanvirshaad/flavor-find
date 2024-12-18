@@ -38,7 +38,7 @@ export class FoodItem {
 
   @OneToMany(() => Review, (review) => review.foodItem)
   reviews: Review[];
-  @OneToMany(() => Favourite, (favourite) => favourite.user)
+  @OneToMany(() => Favourite, (favourite) => favourite.foodItem)
   favourites: Favourite[];
 
   // @Column()
