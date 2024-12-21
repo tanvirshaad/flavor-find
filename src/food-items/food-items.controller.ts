@@ -1,42 +1,74 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { FoodItemsService } from './Provider/food-items.service';
 import { CreateFoodItemDto } from './DTOs/create-foodItem.dto';
 import { UpdateFoodItemDto } from './DTOs/update-foodItem.dto';
 
 @Controller('food-items')
 export class FoodItemsController {
-    constructor(private readonly foodItemsService: FoodItemsService) {}
+  constructor(private readonly foodItemsService: FoodItemsService) {}
 
-    @Get('/search')
-    public searchFoodItemByName(@Query('item') item: string) {
-        console.log(typeof item);
-        return this.foodItemsService.searchFoodItemByName(item);
-    }
-    
-    @Post()
-    public createFoodItem(@Body() createFoodItemDto: CreateFoodItemDto, @Query('restaurantId', ParseIntPipe) restaurantId: number) {   
-        return this.foodItemsService.createFoodItem(createFoodItemDto, restaurantId);
-    }
+  @Get('/search')
+  public searchFoodItemByName(@Query('item') item: string) {
+    console.log(typeof item);
+    return this.foodItemsService.searchFoodItemByName(item);
+  }
 
-    @Get()
-    public getAllFoodItems() {
-        return this.foodItemsService.getAllFoodItems();
-    }
+  @Post()
+  public createFoodItem(
+    @Body() createFoodItemDto: CreateFoodItemDto,
+    @Query('restaurantId', ParseIntPipe) restaurantId: number,
+  ) {
+    return this.foodItemsService.createFoodItem(
+      createFoodItemDto,
+      restaurantId,
+    );
+  }
 
-    @Get('/:id')
-    public getFoodItemById(@Param('id', ParseIntPipe) id: number) {
-        return this.foodItemsService.getFoodItemById(id);
-    }
+  @Get()
+  public getAllFoodItems() {
+    return this.foodItemsService.getAllFoodItems();
+  }
 
-    @Put('/:id')
-    public updateFoodItem(@Param('id', ParseIntPipe) id: number, @Body() updateFoodItemDto: UpdateFoodItemDto) {
-        return this.foodItemsService.updateFoodItem(id, updateFoodItemDto);
-    }
+  @Get('/:id')
+  public getFoodItemById(@Param('id', ParseIntPipe) id: number) {
+    return this.foodItemsService.getFoodItemById(id);
+  }
 
-    @Get('/delete/:id')
-    public deleteFoodItem(@Param('id', ParseIntPipe) id: number) {
-        return this.foodItemsService.deleteFoodItem(id);
-    }
-    
-    
+  @Put('/:id')
+  public updateFoodItem(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateFoodItemDto: UpdateFoodItemDto,
+  ) {
+    return this.foodItemsService.updateFoodItem(id, updateFoodItemDto);
+  }
+
+  @Get('/delete/:id')
+  public deleteFoodItem(@Param('id', ParseIntPipe) id: number) {
+    return this.foodItemsService.deleteFoodItem(id);
+  }
+
+  //filter
+  @Get('/filter')
+  public filterFoodItems(
+    @Query('minPrice', new ParseIntPipe()) minPrice: number,
+    @Query('maxPrice', new ParseIntPipe()) maxPrice: number,
+  ) {
+    console.log(minPrice, maxPrice);
+    return this.foodItemsService.filterByPriceRange(minPrice, maxPrice);
+  }
+
+  //get by cuisine
+  @Get()
+  public getFoodItemsByCuisine(@Query('cuisine') cuisine: string) {
+    return this.foodItemsService.getFoodItemsByCuisine(cuisine);
+  }
 }
