@@ -21,6 +21,12 @@ export class ReservationsService {
     userId: number,
     restaurantId: number,
   ) {
+    const isLoggedIn = await this.usersRepository.findOne({
+      where: { id: userId },
+    });
+    if (!isLoggedIn) {
+      return 'You are not logged in';
+    }
     createReservationDto.reservationDate = new Date();
     const user = await this.usersRepository.findOne({ where: { id: userId } });
     const restaurant = await this.restaurantsRepository.findOne({
