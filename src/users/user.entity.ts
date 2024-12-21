@@ -1,6 +1,7 @@
 import { Favourite } from 'src/favourites/favourite.entity';
 import { Reservation } from 'src/reservations/reservation.entity';
 import { RestaurantRespond } from 'src/restaurant-respond/restaurant-Respond.entity';
+import { RestaurantReview } from 'src/restaurant-reviews/restaurant-review.entity';
 import { Restaurant } from 'src/restaurants/restaurant.entity';
 import { Review } from 'src/reviews/review.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
@@ -38,4 +39,9 @@ export class User {
   reservations: Reservation[];
   @OneToMany(() => Favourite, (favourite) => favourite.user)
   favourites: Favourite[];
+  @OneToMany(
+    () => RestaurantReview,
+    (restaurantReview) => restaurantReview.user,
+  )
+  restaurantReviews: RestaurantReview[];
 }

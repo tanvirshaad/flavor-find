@@ -7,6 +7,7 @@ import { Restaurant } from 'src/restaurants/restaurant.entity';
 import { Review } from 'src/reviews/review.entity';
 import { Reservation } from 'src/reservations/reservation.entity';
 import { Favourite } from 'src/favourites/favourite.entity';
+import { RestaurantReview } from 'src/restaurant-reviews/restaurant-review.entity';
 
 @Module({
   controllers: [UsersController],
@@ -19,6 +20,7 @@ import { Favourite } from 'src/favourites/favourite.entity';
       Review,
       Reservation,
       Favourite,
+      RestaurantReview,
     ]),
   ],
 })

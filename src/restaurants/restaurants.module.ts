@@ -7,11 +7,18 @@ import { Restaurant } from './restaurant.entity';
 import { RestaurantsService } from './Provider/restaurants.service';
 import { Reservation } from 'src/reservations/reservation.entity';
 import { Offer } from 'src/offers/offer.entity';
+import { RestaurantReview } from 'src/restaurant-reviews/restaurant-review.entity';
 
 @Module({
   controllers: [RestaurantsController],
   imports: [
-    TypeOrmModule.forFeature([Restaurant, User, Reservation, Offer]),
+    TypeOrmModule.forFeature([
+      Restaurant,
+      User,
+      Reservation,
+      Offer,
+      RestaurantReview,
+    ]),
     UsersModule,
   ],
   providers: [RestaurantsService],

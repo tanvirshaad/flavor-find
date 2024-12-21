@@ -19,6 +19,8 @@ import { RestaurantRespondModule } from './restaurant-respond/restaurant-respond
 import { RestaurantRespond } from './restaurant-respond/restaurant-Respond.entity';
 import { FavouritesModule } from './favourites/favourites.module';
 import { Favourite } from './favourites/favourite.entity';
+import { RestaurantReviewsModule } from './restaurant-reviews/restaurant-reviews.module';
+import { RestaurantReview } from './restaurant-reviews/restaurant-review.entity';
 
 @Module({
   imports: [
@@ -39,6 +41,7 @@ import { Favourite } from './favourites/favourite.entity';
         Offer,
         Favourite,
         RestaurantRespond,
+        RestaurantReview,
       ],
       synchronize: true,
     }),
@@ -50,6 +53,7 @@ import { Favourite } from './favourites/favourite.entity';
     OffersModule,
     FavouritesModule,
     RestaurantRespondModule,
+    RestaurantReviewsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
