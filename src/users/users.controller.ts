@@ -7,6 +7,9 @@ import {
   ParseIntPipe,
   Put,
 } from '@nestjs/common';
+import { Response } from 'express';
+import { Res } from '@nestjs/common';
+
 import { CreateUserDto } from './DTOs/create-user.dto';
 import { UsersService } from './Provider/users.service';
 import { GetUserDto } from './DTOs/get-user.dto';
@@ -16,6 +19,11 @@ import { LoginDto } from './DTOs/login.dto';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
+  
+  @Get('/logout')
+  public async logout(@Res({ passthrough: true }) response: Response) {
+    return this.usersService.logout(response);
+  }
   @Post()
   public createUser(@Body() createUserDto: CreateUserDto) {
     return this.usersService.createUser(createUserDto);
@@ -42,8 +50,11 @@ export class UsersController {
     return this.usersService.deleteUser(id);
   }
   @Post('/login')
-  public login(@Body() loginDto: LoginDto) {
-    return this.usersService.login(loginDto);
+  public login(
+    @Body() loginDto: LoginDto,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    return this.usersService.login(loginDto, response);
   }
   @Post('/isAuth')
   public isAuth(@Body() loginDto: LoginDto) {
@@ -54,10 +65,8 @@ export class UsersController {
   public async isLoggedIn(@Param('userId', ParseIntPipe) userId: number) {
     return this.usersService.isLoggedIn(userId);
   }
-  @Get('/logout/:userId')
-  public async logout(@Param('userId', ParseIntPipe) userId: number) {
-    return this.usersService.logout(userId);
-  }
+
+  
 }
 
 /*

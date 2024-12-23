@@ -57,10 +57,10 @@ export class FoodItemsController {
   }
 
   //filter
-  @Get('/filter')
+  @Post('/filter')
   public filterFoodItems(
-    @Query('minPrice', new ParseIntPipe()) minPrice: number,
-    @Query('maxPrice', new ParseIntPipe()) maxPrice: number,
+    @Body('minPrice') minPrice: number,
+    @Body('maxPrice') maxPrice: number,
   ) {
     console.log(minPrice, maxPrice);
     return this.foodItemsService.filterByPriceRange(minPrice, maxPrice);

@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -8,25 +9,41 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
+import { Request } from 'express';
+import { JwtService } from '@nestjs/jwt';
+import { Req } from '@nestjs/common';
+
 import { ReservationsService } from './Provider/reservations.service';
 import { CreateReservationDto } from './DTOs/create-reservations.dto';
 import { UpdateReservationDto } from './DTOs/update-reservations.dto';
+import { ExceptionsHandler } from '@nestjs/core/exceptions/exceptions-handler';
 
 @Controller('reservations')
 export class ReservationsController {
-  constructor(private readonly reservationsService: ReservationsService) {}
+  constructor(
+    private readonly reservationsService: ReservationsService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   @Post()
-  public createReservation(
+  public async createReservation(
     @Body() createReservationDto: CreateReservationDto,
-    @Query('userId', ParseIntPipe) userId: number,
-    @Query('restaurantId', ParseIntPipe) restaurantId: number,
+    // @Body('restaurantId', ParseIntPipe) restaurantId: number,
+    @Req() req: Request,
   ) {
-    return this.reservationsService.createReservation(
-      createReservationDto,
-      userId,
-      restaurantId,
-    );
+    const token = req.cookies.token;
+    if (token) {
+      const payload = await this.jwtService.verifyAsync(token);
+      console.log(payload);
+      const userId = payload.id;
+      return this.reservationsService.createReservation(
+        createReservationDto,
+        userId,
+        // restaurantId,
+      );
+    } else {
+      throw new BadRequestException('You are not logged in');
+    }
   }
 
   @Get()

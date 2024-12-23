@@ -1,16 +1,19 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../user.entity';
 import { CreateUserDto } from '../DTOs/create-user.dto';
 import { UpdateUserDto } from '../DTOs/update-user.dto';
 import { LoginDto } from '../DTOs/login.dto';
+import { JwtService } from '@nestjs/jwt';
+import { Response } from 'express';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+    private readonly jwtService: JwtService,
   ) {}
 
   public async createUser(createUserDto: CreateUserDto) {
@@ -39,18 +42,28 @@ export class UsersService {
     return this.usersRepository.delete({ id });
   }
 
-  public async login(loginDto: LoginDto) {
+  public async login(loginDto: LoginDto, response: Response) {
     const { username, password } = loginDto;
+    console.log(process.env.JWT_SECRET);
     const user = await this.usersRepository.findOne({
       where: { username, password },
     });
-    if (user) {
-      user.isLoggedIn = true;
-      await this.usersRepository.save(user);
-      return true;
-    } else {
-      return false;
+    if (!user) {
+      throw new BadRequestException('Invalid credentials');
     }
+    if (user.password != password) {
+      throw new BadRequestException('Invalid credentials');
+    }
+    const jwt = await this.jwtService.signAsync({ id: user.id });
+
+    response.cookie('token', jwt, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+      maxAge: 3600 * 1000,
+    });
+
+    return { message: 'Logged in successfully' };
   }
 
   public async isAuth(username: string, password: string) {
@@ -74,11 +87,13 @@ export class UsersService {
     return !!user;
   }
 
-  public async logout(userId: number) {
-    const user = await this.usersRepository.findOne({
-      where: { id: userId },
+  public logout(response: Response) {
+    response.clearCookie('token', {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+      maxAge: 0,
     });
-    user.isLoggedIn = false;
-    return this.usersRepository.save(user);
+    return { message: 'Logged out successfully' };
   }
 }

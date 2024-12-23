@@ -19,18 +19,18 @@ export class ReservationsService {
   public async createReservation(
     createReservationDto: CreateReservationDto,
     userId: number,
-    restaurantId: number,
+    // restaurantId: number,
   ) {
-    const isLoggedIn = await this.usersRepository.findOne({
-      where: { id: userId },
-    });
-    if (!isLoggedIn) {
-      return 'You are not logged in';
-    }
+    // const isLoggedIn = await this.usersRepository.findOne({
+    //   where: { id: userId },
+    // });
+    // if (!isLoggedIn) {
+    //   return 'You are not logged in';
+    // }
     createReservationDto.reservationDate = new Date();
     const user = await this.usersRepository.findOne({ where: { id: userId } });
     const restaurant = await this.restaurantsRepository.findOne({
-      where: { id: restaurantId },
+      where: { id: createReservationDto.restaurantId },
     });
     const newReservation = this.reservationRepository.create({
       ...createReservationDto,

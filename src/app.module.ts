@@ -21,9 +21,19 @@ import { FavouritesModule } from './favourites/favourites.module';
 import { Favourite } from './favourites/favourite.entity';
 import { RestaurantReviewsModule } from './restaurant-reviews/restaurant-reviews.module';
 import { RestaurantReview } from './restaurant-reviews/restaurant-review.entity';
+import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    PassportModule,
+    ConfigModule.forRoot({ isGlobal: true }),
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET || 'defaultSecretKey',
+      signOptions: { expiresIn: '1h' },
+    }),
     UsersModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -56,6 +66,7 @@ import { RestaurantReview } from './restaurant-reviews/restaurant-review.entity'
     RestaurantReviewsModule,
   ],
   controllers: [AppController],
+  // exports: [JwtModule],
   providers: [AppService],
 })
 export class AppModule {}
