@@ -20,37 +20,25 @@ export class ReviewsService {
     private restaurantsRepository: Repository<Restaurant>,
   ) {}
 
-  public async createReview(
-    createReviewDto: CreateReviewDto,
-    userId: number,
-    foodItemId: number,
-    restaurantId: number,
-  ) {
-    const isLoggedIn = await this.usersRepository.findOne({
+  public async createReview(createReviewDto: CreateReviewDto, userId: number) {
+    const user = await this.usersRepository.findOne({
       where: { id: userId },
     });
-    if (!isLoggedIn) {
-      return 'You are not logged in';
-    } else {
-      const user = await this.usersRepository.findOne({
-        where: { id: userId },
-      });
-      const foodItem = await this.foodItemsRepository.findOne({
-        where: { id: foodItemId },
-      });
-      const restaurant = await this.restaurantsRepository.findOne({
-        where: { id: restaurantId },
-      });
-      createReviewDto.createdDate = new Date();
+    const foodItem = await this.foodItemsRepository.findOne({
+      where: { id: createReviewDto.foodItemId },
+    });
+    const restaurant = await this.restaurantsRepository.findOne({
+      where: { id: createReviewDto.restaurantId },
+    });
+    createReviewDto.createdDate = new Date();
 
-      const newReview = this.reviewRepository.create({
-        ...createReviewDto,
-        user,
-        foodItem,
-        restaurant,
-      });
-      return this.reviewRepository.save(newReview);
-    }
+    const newReview = this.reviewRepository.create({
+      ...createReviewDto,
+      user,
+      foodItem,
+      restaurant,
+    });
+    return this.reviewRepository.save(newReview);
   }
 
   public async getAllReviews() {

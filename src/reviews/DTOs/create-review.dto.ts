@@ -1,25 +1,24 @@
-import { IsNumber, IsOptional, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateReviewDto {
-    reviewId: number;
-        @IsNumber()
-        rating: number;
-    
-        @IsString()
-        comment: string;
-    
-        @IsOptional()
-        createdDate?: Date;
-        // @IsNumber()
+  @IsNumber()
+  rating: number;
 
-    // @IsNotEmpty()
-    // userId: number;
+  @IsString()
+  comment: string;
 
-    // @IsNumber()
-    // @IsNotEmpty()
-    // restaurantId: number;
+  @IsOptional()
+  createdDate?: Date;
+  // @IsNumber()
 
-    // @IsNumber()
-    // @IsOptional()
-    // foodItemId?: number;
+  // @IsNotEmpty()
+  // userId: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  restaurantId: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  foodItemId: number;
 }
