@@ -6,7 +6,7 @@ import { CreateOffersDto } from './DTOs/create-offers.dto';
 export class OffersController {
     constructor(private readonly offerService: OffersService) {}
     @Post()
-        public createOffer(@Body() createOfferDto: CreateOffersDto, @Query('restaurantId', ParseIntPipe) restaurantId: number) {
+        public createOffer(@Body() createOfferDto: CreateOffersDto, @Body('restaurantId', ParseIntPipe) restaurantId: number) {
             return this.offerService.createOffer(createOfferDto, restaurantId);
         }
 

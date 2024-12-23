@@ -1,43 +1,58 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { RestaurantsService } from './Provider/restaurants.service';
 import { CreateRestaurantDto } from './DTOs/create-restaurant.dto';
 import { UpdateUserDto } from 'src/users/DTOs/update-user.dto';
 import { UpdateRestaurantDto } from './DTOs/update-restaurant.dto';
+import { stat } from 'fs';
+import { JwtAuthGuard } from 'src/users/Guard/jwt.guard';
 
 @Controller('restaurants')
 export class RestaurantsController {
     constructor(private readonly restaurantsService: RestaurantsService) {}
 
     @Post()
-    public createRestaurant(@Body() createRestaurantDto: CreateRestaurantDto, @Query('userId') userId: number) {
-        return this.restaurantsService.createRestaurant(createRestaurantDto, userId);
+    @UseGuards(JwtAuthGuard)
+    public createRestaurant(@Body() createRestaurantDto: CreateRestaurantDto) {
+        return this.restaurantsService.createRestaurant(createRestaurantDto);
     }
+
 
     @Get()
     public getAllRestaurants() {
         return this.restaurantsService.getAllRestaurants();
     }
     @Get('/:id')
+    @UseGuards(JwtAuthGuard)
     public getRestaurantById(@Param('id', ParseIntPipe) id: number) {
         return this.restaurantsService.getRestaurantById(id);
     }    
     // to view the reviews of a the specific restaurant only
     @Get('/restaurantReviews/:id')
+    @UseGuards(JwtAuthGuard)
     public getRestaurantReviews(@Param('id', ParseIntPipe) id: number) {
         return this.restaurantsService.getRestaurantReviews(id);
     }  
 
     @Get('/reservation/:id')
+    @UseGuards(JwtAuthGuard)
     public changeRestaurantReservation(@Param('id', ParseIntPipe) id: number , @Query('reservationId', ParseIntPipe) reservationId: number, @Query('newStatus') newStatus: string) {
         return this.restaurantsService.changeRestaurantReservation(id, reservationId, newStatus);
     }  
 
     @Put('/:id')
+    @UseGuards(JwtAuthGuard)
     public updateRestaurant(@Param('id', ParseIntPipe) id: number, @Body() updateRestaurantDto: UpdateRestaurantDto) {
         return this.restaurantsService.updateRestaurant(id, updateRestaurantDto);
     }
 
+    @Get('/updatestatus/:id')
+    @UseGuards(JwtAuthGuard)
+    public updateRestaurantStatus(@Param('id', ParseIntPipe) id: number , @Query('status') status: string) {
+        return this.restaurantsService.updateRestaurantStatus(id, status);
+    }  
+
     @Get('/delete/:id')
+    @UseGuards(JwtAuthGuard)
     public deleteRestaurant(@Param('id', ParseIntPipe) id: number) {
         return this.restaurantsService.deleteRestaurant(id);
     }

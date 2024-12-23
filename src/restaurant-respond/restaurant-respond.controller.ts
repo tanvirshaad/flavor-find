@@ -10,10 +10,10 @@ export class RestaurantRespondController {
   @Post()
   public createResponse(
     @Body() createResponseDto: CreateRestaurantResponseDto,
-    @Query('userId', ParseIntPipe) userId: number,
-    @Query('reviewId', ParseIntPipe)
+    @Body('userId', ParseIntPipe) userId: number,
+    @Body('reviewId', ParseIntPipe)
     reviewId: number,
-    @Query('restaurantId', ParseIntPipe) restaurantId: number,
+    @Body('restaurantId', ParseIntPipe) restaurantId: number,
   ) {
     return this.responseService.createResponse(
       createResponseDto,

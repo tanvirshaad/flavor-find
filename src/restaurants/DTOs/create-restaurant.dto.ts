@@ -28,5 +28,5 @@ export class CreateRestaurantDto {
     closingTime: string;
     @IsNumber()
     @IsOptional()
-    userId?: number;
+    userId: number;
 }

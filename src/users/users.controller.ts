@@ -1,9 +1,12 @@
-import { Controller, Get, Post, Body, Param, ParseIntPipe, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, ParseIntPipe, Put, UseGuards, Req } from '@nestjs/common';
 import { CreateUserDto } from './DTOs/create-user.dto';
 import { UsersService } from './Provider/users.service';
 import { GetUserDto } from './DTOs/get-user.dto';
 import { UpdateUserDto } from './DTOs/update-user.dto';
 import { LoginDto } from './DTOs/login.dto';
+import { JwtAuthGuard } from './Guard/jwt.guard';
+import { LocalGuard } from './Guard/local.guard';
+import { Request } from 'express';
 
 @Controller('users')
 export class UsersController {
@@ -33,11 +36,22 @@ export class UsersController {
     public deleteUser(@Param('id', ParseIntPipe) id: number) {
         return this.usersService.deleteUser(id);
     }
-    @Post('/login')
-    public login(@Body() loginDto: LoginDto) {
-        return this.usersService.login(loginDto);
+    // @Post('/login')
+    // @UseGuards(JwtAuthGuard)
+    // public login(@Body() loginDto: LoginDto) {
+    //     return this.usersService.login(loginDto);
+    // }
+    @Post('/signin')
+    @UseGuards(LocalGuard)
+    login(@Req() req: Request) {
+    return req.user;
     }
-
+    @Get('/whoami')
+    @UseGuards(JwtAuthGuard)
+    whoAmI(@Req() req: Request) {
+      const user = req.user as any;
+      return `${user.username} is logged in! Your id is ${user.id}!`;
+    }
     @Post('/isAuth')
     public isAuth(@Body() loginDto: LoginDto) {
         return this.usersService.isAuth(loginDto.username, loginDto.password);

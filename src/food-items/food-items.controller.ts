@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { FoodItemsService } from './Provider/food-items.service';
 import { CreateFoodItemDto } from './DTOs/create-foodItem.dto';
 import { UpdateFoodItemDto } from './DTOs/update-foodItem.dto';
+import { JwtAuthGuard } from 'src/users/Guard/jwt.guard';
 
 @Controller('food-items')
 export class FoodItemsController {
@@ -14,7 +15,8 @@ export class FoodItemsController {
     }
     
     @Post()
-    public createFoodItem(@Body() createFoodItemDto: CreateFoodItemDto, @Query('restaurantId', ParseIntPipe) restaurantId: number) {   
+    @UseGuards(JwtAuthGuard)
+    public createFoodItem(@Body() createFoodItemDto: CreateFoodItemDto, @Body('restaurantId', ParseIntPipe) restaurantId: number) {   
         return this.foodItemsService.createFoodItem(createFoodItemDto, restaurantId);
     }
 
@@ -29,11 +31,13 @@ export class FoodItemsController {
     }
 
     @Put('/:id')
+    @UseGuards(JwtAuthGuard)
     public updateFoodItem(@Param('id', ParseIntPipe) id: number, @Body() updateFoodItemDto: UpdateFoodItemDto) {
         return this.foodItemsService.updateFoodItem(id, updateFoodItemDto);
     }
 
     @Get('/delete/:id')
+    @UseGuards(JwtAuthGuard)
     public deleteFoodItem(@Param('id', ParseIntPipe) id: number) {
         return this.foodItemsService.deleteFoodItem(id);
     }

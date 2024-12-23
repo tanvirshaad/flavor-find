@@ -17,9 +17,19 @@ import { Offer } from './offers/offer.entity';
 import { RestaurantRespondController } from './restaurant-respond/restaurant-respond.controller';
 import { RestaurantRespondModule } from './restaurant-respond/restaurant-respond.module';
 import { RestaurantRespond } from './restaurant-respond/restaurant-Respond.entity';
+import { MailerService } from './mailer/provider/mailer.service';
+import { ContactsModule } from './contact/contacts.module';
+import { Contact } from './contact/contact.entity';
+import { ConfigModule } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports: [UsersModule, TypeOrmModule.forRoot(
+  imports: [ ConfigModule.forRoot({ isGlobal: true }),
+      JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET || 'defaultSecretKey',
+      signOptions: { expiresIn: '1h' },
+    }), UsersModule, TypeOrmModule.forRoot(
     {
       type: 'postgres',
       host: 'localhost',
@@ -27,9 +37,10 @@ import { RestaurantRespond } from './restaurant-respond/restaurant-Respond.entit
       username: 'postgres',
       password: 'root',
       database: 'flavor-find',
-      entities: [User, Restaurant, FoodItem, Review, Reservation, Offer, RestaurantRespond],
+      entities: [User, Restaurant, FoodItem, Review, Reservation, Offer, RestaurantRespond, Contact],
       synchronize: true,
     }
+    
   ),
     UsersModule,
     RestaurantsModule,
@@ -37,11 +48,12 @@ import { RestaurantRespond } from './restaurant-respond/restaurant-Respond.entit
     ReviewsModule,
     ReservationsModule,
     OffersModule,
-    RestaurantRespondModule
+    RestaurantRespondModule, 
+    ContactsModule
     
 ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, MailerService],
 })
 export class AppModule {}
 

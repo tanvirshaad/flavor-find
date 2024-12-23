@@ -1,3 +1,4 @@
+import { Contact } from "src/contact/contact.entity";
 import { Reservation } from "src/reservations/reservation.entity";
 import { RestaurantRespond } from "src/restaurant-respond/restaurant-Respond.entity";
 import { Restaurant } from "src/restaurants/restaurant.entity";
@@ -32,4 +33,6 @@ export class User {
     responds: RestaurantRespond[];
     @OneToMany(() => Reservation, (reservation) => reservation.user)
     reservations: Reservation[];
+    @OneToMany(() => Contact, (contact) => contact.user)
+    contacts: Contact[];
 }
