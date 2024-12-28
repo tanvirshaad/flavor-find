@@ -1,5 +1,5 @@
 import { ILike, Like, Repository, Between } from 'typeorm';
-
+import { Injectable } from '@nestjs/common';
 import { FoodItem } from '../food-items.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateFoodItemDto } from '../DTOs/create-foodItem.dto';
@@ -7,6 +7,7 @@ import { Restaurant } from 'src/restaurants/restaurant.entity';
 import { UpdateFoodItemDto } from '../DTOs/update-foodItem.dto';
 import { NotFoundException } from '@nestjs/common';
 
+@Injectable()
 export class FoodItemsService {
   constructor(
     @InjectRepository(FoodItem)

@@ -1,4 +1,4 @@
-import { Inject } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Review } from '../review.entity';
@@ -8,6 +8,7 @@ import { FoodItem } from 'src/food-items/food-items.entity';
 import { Restaurant } from 'src/restaurants/restaurant.entity';
 import { UpdateReviewDto } from '../DTOs/update-review.dto';
 
+@Injectable()
 export class ReviewsService {
   constructor(
     @InjectRepository(Review)

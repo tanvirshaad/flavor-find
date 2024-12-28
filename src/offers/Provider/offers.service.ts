@@ -1,9 +1,11 @@
 import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Offer } from '../offer.entity';
 import { CreateOffersDto } from '../DTOs/create-offers.dto';
 import { Restaurant } from 'src/restaurants/restaurant.entity';
 
+@Injectable()
 export class OffersService {
   constructor(
     @InjectRepository(Offer)

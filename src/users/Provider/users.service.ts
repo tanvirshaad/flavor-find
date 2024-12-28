@@ -6,6 +6,7 @@ import { CreateUserDto } from '../DTOs/create-user.dto';
 import { UpdateUserDto } from '../DTOs/update-user.dto';
 import { LoginDto } from '../DTOs/login.dto';
 import { JwtService } from '@nestjs/jwt';
+
 import { Response } from 'express';
 
 @Injectable()
@@ -13,7 +14,7 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
-    private readonly jwtService: JwtService,
+    private jwtService: JwtService,
   ) {}
 
   public async createUser(createUserDto: CreateUserDto) {

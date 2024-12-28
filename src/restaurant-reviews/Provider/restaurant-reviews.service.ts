@@ -8,6 +8,7 @@ import { CreateRestaurantReviewDto } from '../DTOs/create-restaurant-review.dto'
 import { UsersService } from 'src/users/Provider/users.service';
 import { UpdateRestaurantReviewsDto } from '../DTOs/update-restaurant-reviews.dto';
 
+@Injectable()
 export class RestaurantReviewsService {
   constructor(
     @InjectRepository(RestaurantReview)

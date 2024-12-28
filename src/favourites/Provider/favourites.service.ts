@@ -1,10 +1,12 @@
 import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable } from '@nestjs/common';
 import { Favourite } from '../favourite.entity';
-import { In, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { User } from 'src/users/user.entity';
 import { FoodItem } from 'src/food-items/food-items.entity';
 import { CreateFavouriteDto } from '../DTOs/create-favourites.dto';
 
+@Injectable()
 export class FavouritesService {
   constructor(
     @InjectRepository(Favourite)

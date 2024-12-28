@@ -1,4 +1,5 @@
 import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Reservation } from '../reservation.entity';
 import { CreateReservationDto } from '../DTOs/create-reservations.dto';
@@ -6,6 +7,7 @@ import { User } from 'src/users/user.entity';
 import { Restaurant } from 'src/restaurants/restaurant.entity';
 import { UpdateReservationDto } from '../DTOs/update-reservations.dto';
 
+@Injectable()
 export class ReservationsService {
   constructor(
     @InjectRepository(Reservation)

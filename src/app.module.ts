@@ -24,6 +24,8 @@ import { RestaurantReview } from './restaurant-reviews/restaurant-review.entity'
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigModule } from '@nestjs/config';
+import { OtpModule } from './otp/otp.module';
+import { EmailModule } from './email/email.module';
 
 @Module({
   imports: [
@@ -64,6 +66,8 @@ import { ConfigModule } from '@nestjs/config';
     FavouritesModule,
     RestaurantRespondModule,
     RestaurantReviewsModule,
+    OtpModule,
+    EmailModule,
   ],
   controllers: [AppController],
   // exports: [JwtModule],
