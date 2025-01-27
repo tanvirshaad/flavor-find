@@ -1,19 +1,24 @@
-import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import {
+  IsBoolean,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class CreateFoodItemDto {
-    @IsString()
-    name: string;
-    @IsNumber()
-    price: number;
-    @IsString()
-    description: string;
-    @IsString()
-    cuisine: string;
-    @IsBoolean()
-    isAvailable: boolean;
-    @IsNumber()
-    @IsOptional()
-    restaurantId?: number;
+  @IsString()
+  name: string;
+  @IsNumber()
+  price: number;
+  @IsString()
+  description: string;
+  @IsString()
+  cuisine: string;
+  @IsBoolean()
+  isAvailable: boolean;
+  @IsNumber()
+  restaurantId: number;
 }
 
 /*

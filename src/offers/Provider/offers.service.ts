@@ -14,10 +14,8 @@ export class OffersService {
     private restaurantRepository: Repository<Restaurant>,
   ) {}
 
-  public async createOffer(
-    createOffersDto: CreateOffersDto,
-    restaurantId: number,
-  ) {
+  public async createOffer(createOffersDto: CreateOffersDto) {
+    const { restaurantId } = createOffersDto;
     createOffersDto.validFrom = new Date();
     const restaurant = await this.restaurantRepository.findOne({
       where: { id: restaurantId },

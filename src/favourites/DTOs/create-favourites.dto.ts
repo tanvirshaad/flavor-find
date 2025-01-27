@@ -1,5 +1,5 @@
 import {
-  IsDate,
+  // IsDate,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -10,4 +10,11 @@ export class CreateFavouriteDto {
   @IsString()
   @IsOptional()
   status?: string;
+
+  @IsNumber()
+  @IsNotEmpty()
+  userId: number;
+  @IsNumber()
+  @IsNotEmpty()
+  foodItemId: number;
 }

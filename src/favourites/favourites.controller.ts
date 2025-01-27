@@ -15,17 +15,10 @@ export class FavouritesController {
   constructor(private readonly favouritesService: FavouritesService) {}
 
   @Post()
-  public async addFavourite(
-    createFavouriteDto: CreateFavouriteDto,
-    @Query('userId', ParseIntPipe) userId: number,
-    @Query('foodItemId', ParseIntPipe) foodItemId: number,
-  ) {
-    return this.favouritesService.createFavourite(
-      createFavouriteDto,
-      userId,
-      foodItemId,
-    );
+  public async addFavourite(createFavouriteDto: CreateFavouriteDto) {
+    return this.favouritesService.createFavourite(createFavouriteDto);
   }
+
   @Get('/:userId')
   public async getFavouritesByUserId(
     @Param('userId', ParseIntPipe) userId: number,

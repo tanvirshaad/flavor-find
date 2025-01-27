@@ -23,14 +23,8 @@ export class FoodItemsController {
   }
 
   @Post()
-  public createFoodItem(
-    @Body() createFoodItemDto: CreateFoodItemDto,
-    @Query('restaurantId', ParseIntPipe) restaurantId: number,
-  ) {
-    return this.foodItemsService.createFoodItem(
-      createFoodItemDto,
-      restaurantId,
-    );
+  public createFoodItem(@Body() createFoodItemDto: CreateFoodItemDto) {
+    return this.foodItemsService.createFoodItem(createFoodItemDto);
   }
 
   @Get()

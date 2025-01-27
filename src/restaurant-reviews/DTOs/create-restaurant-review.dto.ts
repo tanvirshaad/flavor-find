@@ -10,4 +10,10 @@ export class CreateRestaurantReviewDto {
 
   @IsOptional()
   createdDate?: Date;
+
+  @IsNumber()
+  userId: number;
+
+  @IsNumber()
+  restaurantId: number;
 }

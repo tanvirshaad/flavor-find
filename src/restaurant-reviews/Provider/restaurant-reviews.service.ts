@@ -22,10 +22,9 @@ export class RestaurantReviewsService {
 
   public async createRestaurantReview(
     createRestaurantReviewDto: CreateRestaurantReviewDto,
-    userId: number,
-    restaurantId: number,
   ) {
     // console.log(createRestaurantReviewDto);
+    const { userId, restaurantId } = createRestaurantReviewDto;
     const user = await this.usersRepository.findOne({ where: { id: userId } });
     const restaurant = await this.restaurantRepository.findOne({
       where: { id: restaurantId },

@@ -12,14 +12,14 @@ import { Res } from '@nestjs/common';
 
 import { CreateUserDto } from './DTOs/create-user.dto';
 import { UsersService } from './Provider/users.service';
-import { GetUserDto } from './DTOs/get-user.dto';
+// import { GetUserDto } from './DTOs/get-user.dto';
 import { UpdateUserDto } from './DTOs/update-user.dto';
 import { LoginDto } from './DTOs/login.dto';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-  
+
   @Get('/logout')
   public async logout(@Res({ passthrough: true }) response: Response) {
     return this.usersService.logout(response);
@@ -65,8 +65,6 @@ export class UsersController {
   public async isLoggedIn(@Param('userId', ParseIntPipe) userId: number) {
     return this.usersService.isLoggedIn(userId);
   }
-
-  
 }
 
 /*

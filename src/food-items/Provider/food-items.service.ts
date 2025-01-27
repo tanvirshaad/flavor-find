@@ -1,4 +1,4 @@
-import { ILike, Like, Repository, Between } from 'typeorm';
+import { ILike, Repository, Between } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { FoodItem } from '../food-items.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -32,16 +32,16 @@ export class FoodItemsService {
     });
   }
 
-  public async createFoodItem(
-    createFoodItemDto: CreateFoodItemDto,
-    id: number,
-  ) {
+  public async createFoodItem(createFoodItemDto: CreateFoodItemDto) {
+    const { restaurantId } = createFoodItemDto;
     const restaurant = await this.restaurantRepository.findOne({
-      where: { id },
+      where: { id: restaurantId },
     });
 
     if (!restaurant) {
-      throw new NotFoundException(`Restaurant with ID ${id} not found`);
+      throw new NotFoundException(
+        `Restaurant with ID ${restaurantId} not found`,
+      );
     }
 
     const newFoodItem = this.foodItemsRepository.create({

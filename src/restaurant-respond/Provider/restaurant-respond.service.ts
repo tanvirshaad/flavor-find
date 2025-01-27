@@ -1,5 +1,5 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Req } from '@nestjs/common';
 import { Restaurant } from 'src/restaurants/restaurant.entity';
 import { Review } from 'src/reviews/review.entity';
 import { User } from 'src/users/user.entity';
@@ -21,12 +21,8 @@ export class RestaurantRespondService {
     private restaurantsRepository: Repository<Restaurant>,
   ) {}
 
-  public async createResponse(
-    createRespondDto: CreateRestaurantResponseDto,
-    userId: number,
-    reviewId: number,
-    restaurantId: number,
-  ) {
+  public async createResponse(createRespondDto: CreateRestaurantResponseDto) {
+    const { userId, reviewId, restaurantId } = createRespondDto;
     const user = await this.usersRepository.findOne({ where: { id: userId } });
     const review = await this.reviewRepository.findOne({
       where: { id: reviewId },

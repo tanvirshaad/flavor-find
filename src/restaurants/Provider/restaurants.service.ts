@@ -18,10 +18,8 @@ export class RestaurantsService {
     private usersService: UsersService,
   ) {}
 
-  public async createRestaurant(
-    createRestaurantDto: CreateRestaurantDto,
-    userId: number,
-  ) {
+  public async createRestaurant(createRestaurantDto: CreateRestaurantDto) {
+    const userId = createRestaurantDto.userId;
     const isLoggedIn = await this.usersService.isLoggedIn(userId);
     if (!isLoggedIn) {
       return 'You are not logged in';

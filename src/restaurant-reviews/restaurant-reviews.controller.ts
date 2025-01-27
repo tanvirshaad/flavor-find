@@ -7,7 +7,11 @@ import {
   Get,
   Put,
   Param,
+  BadRequestException,
+  Req,
 } from '@nestjs/common';
+import { Request } from 'express';
+import { JwtService } from '@nestjs/jwt';
 import { RestaurantReviewsService } from './Provider/restaurant-reviews.service';
 import { CreateRestaurantReviewDto } from './DTOs/create-restaurant-review.dto';
 import { UpdateRestaurantReviewsDto } from './DTOs/update-restaurant-reviews.dto';
@@ -15,21 +19,32 @@ import { log } from 'console';
 
 @Controller('restaurant-reviews')
 export class RestaurantReviewsController {
-  constructor(private restaurantReviewsService: RestaurantReviewsService) {}
+  constructor(
+    private restaurantReviewsService: RestaurantReviewsService,
+    private jwtService: JwtService,
+  ) {}
 
   @Post()
-  public createRestaurantReview(
+  public async createRestaurantReview(
     @Body()
     createRestaurantReviewDto: CreateRestaurantReviewDto,
-    @Query('userId', ParseIntPipe) userId: number,
-    @Query('restaurantId', ParseIntPipe) restaurantId: number,
+    @Req() req: Request,
   ) {
     // console.log(createRestaurantReviewDto);
-    return this.restaurantReviewsService.createRestaurantReview(
-      createRestaurantReviewDto,
-      userId,
-      restaurantId,
-    );
+    const token = req.cookies.token;
+    if (token) {
+      const payload = await this.jwtService.verifyAsync(token);
+
+      if (createRestaurantReviewDto.userId != payload.id) {
+        new BadRequestException(
+          'You are not authorized to respond to this review',
+        );
+      } else {
+        return this.restaurantReviewsService.createRestaurantReview(
+          createRestaurantReviewDto,
+        );
+      }
+    }
   }
   //get by restaurant id
   @Get()
