@@ -1,18 +1,24 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post, Put, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, ParseIntPipe, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
 import { RestaurantsService } from './Provider/restaurants.service';
 import { CreateRestaurantDto } from './DTOs/create-restaurant.dto';
 import { UpdateUserDto } from 'src/users/DTOs/update-user.dto';
 import { UpdateRestaurantDto } from './DTOs/update-restaurant.dto';
 import { stat } from 'fs';
 import { JwtAuthGuard } from 'src/users/Guard/jwt.guard';
+import { UsersService } from 'src/users/Provider/users.service';
+import { Request } from 'express';
 
 @Controller('restaurants')
 export class RestaurantsController {
-    constructor(private readonly restaurantsService: RestaurantsService) {}
+    constructor(
+        private readonly usersService: UsersService,
+        private readonly restaurantsService: RestaurantsService) {}
 
     @Post()
     @UseGuards(JwtAuthGuard)
-    public createRestaurant(@Body() createRestaurantDto: CreateRestaurantDto) {
+    public async createRestaurant(@Body() createRestaurantDto: CreateRestaurantDto, @Req() req: Request) {
+        const userId = req.user['id'];
+        createRestaurantDto.userId = userId;
         return this.restaurantsService.createRestaurant(createRestaurantDto);
     }
 

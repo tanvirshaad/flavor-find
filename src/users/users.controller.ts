@@ -1,3 +1,4 @@
+import { stat } from 'fs';
 import { Controller, Get, Post, Body, Param, ParseIntPipe, Put, UseGuards, Req } from '@nestjs/common';
 import { CreateUserDto } from './DTOs/create-user.dto';
 import { UsersService } from './Provider/users.service';
@@ -7,6 +8,7 @@ import { LoginDto } from './DTOs/login.dto';
 import { JwtAuthGuard } from './Guard/jwt.guard';
 import { LocalGuard } from './Guard/local.guard';
 import { Request } from 'express';
+import { RegValidationDTO } from './DTOs/reg-validation.dto';
 
 @Controller('users')
 export class UsersController {
@@ -16,7 +18,9 @@ export class UsersController {
         return this.usersService.createUser(createUserDto);    
     }
 
-    @Get('/:id')
+
+
+    @Get('by-id/:id')
     public getUserById(@Param('id', ParseIntPipe) id: number) {
         return this.usersService.getUserById(id);
     }
@@ -24,7 +28,14 @@ export class UsersController {
     public getAllUsers() {
         return this.usersService.getAllUsers();
     }
+
+    @Post('/verify')
+    public verifyUser(@Body() verifyUserDto: RegValidationDTO) {
+        return this.usersService.verifyUser(verifyUserDto.email, verifyUserDto.otp);    
+    }
+    
     @Put('/:id')
+    @UseGuards(JwtAuthGuard)
     public async updateUser(
      @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto,
@@ -33,6 +44,7 @@ export class UsersController {
     }
 
     @Get('/delete/:id')
+    @UseGuards(JwtAuthGuard)
     public deleteUser(@Param('id', ParseIntPipe) id: number) {
         return this.usersService.deleteUser(id);
     }
@@ -46,11 +58,14 @@ export class UsersController {
     login(@Req() req: Request) {
     return req.user;
     }
-    @Get('/whoami')
+
+
+    @Get('profile')
     @UseGuards(JwtAuthGuard)
     whoAmI(@Req() req: Request) {
-      const user = req.user as any;
-      return `${user.username} is logged in! Your id is ${user.id}!`;
+        const user = req.user;  
+         return this.usersService.getUserById(user['id']);
+        
     }
     @Post('/isAuth')
     public isAuth(@Body() loginDto: LoginDto) {

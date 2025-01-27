@@ -18,12 +18,9 @@ export class ReviewsController {
 
   @Post()
   public createReview(
-    @Body() createReviewDto: CreateReviewDto,
-    @Query('userId', ParseIntPipe) userId: number,
-    @Query('foodItemId', ParseIntPipe)
-    foodItemId: number,
-    @Query('restaurantId', ParseIntPipe) restaurantId: number,
+    @Body() createReviewDto: CreateReviewDto & { userId: number; foodItemId: number; restaurantId: number }
   ) {
+    const { userId, foodItemId, restaurantId } = createReviewDto;
     return this.reviewsService.createReview(
       createReviewDto,
       userId,

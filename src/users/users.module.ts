@@ -12,6 +12,7 @@ import { LocalStrategy } from './Strategy/local.strategy';
 import { JwtStrategy } from './Strategy/jwt.strategy';
 import { Contact } from 'src/contact/contact.entity';
 import { MailerService } from 'src/mailer/provider/mailer.service';
+import { MailerModule } from 'src/mailer/mailer.module';
 
 @Module({
   controllers: [UsersController],
@@ -20,6 +21,6 @@ import { MailerService } from 'src/mailer/provider/mailer.service';
   imports: [TypeOrmModule.forFeature([User, Restaurant, Review, Reservation, Contact]), PassportModule, JwtModule.register({
     secret: 'abc123',
     signOptions: { expiresIn: '1h' },
-  })],
+  }), MailerModule,],
 })
 export class UsersModule {}

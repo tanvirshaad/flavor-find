@@ -18,5 +18,9 @@ export class CreateUserDto {
     @IsOptional()
     createdAt?: Date;
     @IsString()
-    status: string;
+    @IsOptional()
+    status?: string;
+    @IsString()
+    @IsOptional()
+    otp?: string;
 }

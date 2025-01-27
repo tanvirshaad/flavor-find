@@ -1,4 +1,5 @@
 import * as nodemailer from 'nodemailer';
+import * as crypto from 'crypto';
 
 export class MailerService {
     private transporter;
@@ -8,11 +9,30 @@ export class MailerService {
             service: 'gmail',
             auth: {
                 user: 'tahmidkhan2596@gmail.com',
-                pass: 'dgoa ftaa uoce wzvl'
+                pass: 'rnup zdcj hual qjto'
             }
         });
     }
+    async sendOtpEmail(to: string, otp: string) {
+        const mailOptions = {
+            from: 'tahmidkhan2596@gmail.com', 
+            to: to,
+            subject: 'Email Confirmation',
+            text: `Thank you for Registration to ensure your OTP code is: ${otp}`
+        };
 
+        try {
+            console.log(`Sending OTP email to ${to} with OTP: ${otp}`);
+            await this.transporter.sendMail(mailOptions);
+            console.log(`OTP email sent to ${to}`);
+        } catch (error) {
+            console.error(`Error sending OTP email to ${to}:`, error);
+        }
+    }
+
+    generateOtp(): string {
+        return crypto.randomBytes(3).toString('hex'); 
+    }
     async sendThankYouEmail(to: string) {
         const mailOptions = {
             from: 'tahmidkhan2596@gmail.com',
@@ -23,14 +43,6 @@ export class MailerService {
 
         await this.transporter.sendMail(mailOptions);
     }
-    async sendRegisterYouEmail(to: string) {
-        const mailOptions = {
-            from: 'tahmidkhan2596@gmail.com',
-            to: to,
-            subject: 'Registration Succeded!',
-            text: 'Thank you for registering on flavor find!'
-        };
+    
 
-        await this.transporter.sendMail(mailOptions);
-    }
 }

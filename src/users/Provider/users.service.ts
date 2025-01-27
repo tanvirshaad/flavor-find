@@ -7,41 +7,54 @@ import { UpdateUserDto } from "../DTOs/update-user.dto";
 import e from "express";
 import { LoginDto } from "../DTOs/login.dto";
 import { JwtService } from "@nestjs/jwt";
-//import { MailerService } from "src/mailer/Provider/mailer.service";
+import { MailerService } from "src/mailer/Provider/mailer.service";
 
 @Injectable()
 export class UsersService {
     constructor(
         @InjectRepository(User) 
         private usersRepository: Repository<User>,
-        //private readonly mailerService: MailerService,
+        private readonly mailerService: MailerService,
         private JwtService: JwtService
         
     ) {}
 
     public async createUser(createUserDto: CreateUserDto){
         createUserDto.createdAt = new Date();
+        createUserDto.status = 'Inactive';
         let newUser = this.usersRepository.create(createUserDto);
         newUser = await this.usersRepository.save(newUser);
-        //await this.mailerService.sendRegisterYouEmail(createUserDto.email);
+        const otp = this.mailerService.generateOtp();
+        await this.mailerService.sendOtpEmail(createUserDto.email, otp);
         return newUser;
     }
 
-    //get user by id
+    public async verifyUser(email: string, otp: string){
+        const user = await this.usersRepository.findOne({ where: { email } });
+        if(user.otp === otp){
+            user.status = 'Active';
+            return this.usersRepository.save(user);
+        }
+        else{
+            return null;
+            }
+    }   
+
+   
     public async getUserById(id: number){
         return this.usersRepository.findOne({ where: { id } });
     }
-    //get all users
+  
     public async getAllUsers(){
         return this.usersRepository.find();
     }
-    //update user based on id
+   
     public async updateUser(id: number, updateUserDto: UpdateUserDto){
         const user = await this.usersRepository.findOneBy({ id });
         const updatedUser = this.usersRepository.merge(user, updateUserDto);
         return this.usersRepository.save(updatedUser);
     }
-    //delete user based on id
+    
     public async deleteUser(id: number){
         return this.usersRepository.delete({ id });
     }

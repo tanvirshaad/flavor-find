@@ -20,16 +20,11 @@ import { RestaurantRespond } from './restaurant-respond/restaurant-Respond.entit
 import { MailerService } from './mailer/provider/mailer.service';
 import { ContactsModule } from './contact/contacts.module';
 import { Contact } from './contact/contact.entity';
-import { ConfigModule } from '@nestjs/config';
-import { JwtModule } from '@nestjs/jwt';
+import { MailerModule } from './mailer/mailer.module';
+
 
 @Module({
-  imports: [ ConfigModule.forRoot({ isGlobal: true }),
-      JwtModule.register({
-      global: true,
-      secret: process.env.JWT_SECRET || 'defaultSecretKey',
-      signOptions: { expiresIn: '1h' },
-    }), UsersModule, TypeOrmModule.forRoot(
+  imports: [ UsersModule, TypeOrmModule.forRoot(
     {
       type: 'postgres',
       host: 'localhost',
@@ -49,7 +44,8 @@ import { JwtModule } from '@nestjs/jwt';
     ReservationsModule,
     OffersModule,
     RestaurantRespondModule, 
-    ContactsModule
+    ContactsModule,
+    MailerModule,
     
 ],
   controllers: [AppController],

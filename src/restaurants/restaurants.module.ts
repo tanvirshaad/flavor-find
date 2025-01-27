@@ -10,7 +10,7 @@ import { Offer } from 'src/offers/offer.entity';
 
 @Module({
   controllers: [RestaurantsController],
-  imports: [TypeOrmModule.forFeature([Restaurant, User, Reservation, Offer])],
+  imports: [TypeOrmModule.forFeature([Restaurant, User, Reservation, Offer]), UsersModule],
   providers: [RestaurantsService],
   exports: [RestaurantsService],
 })

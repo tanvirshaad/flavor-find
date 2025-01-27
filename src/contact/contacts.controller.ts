@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Param, Put, Delete, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put, Delete, ParseIntPipe, UseGuards } from '@nestjs/common';
 import { ContactsService } from './Provider/contacts.service';
 
 import CreateContactsDto from "./DTOs/create-contacts.dto";
+import { JwtAuthGuard } from 'src/users/Guard/jwt.guard';
 
 
 @Controller('contacts')
@@ -9,6 +10,7 @@ export class ContactsController {
     constructor(private readonly contactService: ContactsService) {}
 
     @Post()
+    @UseGuards(JwtAuthGuard)
     createContact(@Body() createContactDto: CreateContactsDto, @Body('userId') userId: number) {
         return this.contactService.createContact(createContactDto, userId);
     }

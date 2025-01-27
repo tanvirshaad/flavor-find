@@ -25,6 +25,8 @@ export class User {
     createdAt: Date;
     @Column()
     status: string;
+    @Column({ nullable: true })
+    otp: string;
     @OneToMany(() => Restaurant, (restaurant) => restaurant.user)
     restaurants: Restaurant[];
     @OneToMany(() => Review, (review) => review.user)
