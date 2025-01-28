@@ -1,4 +1,5 @@
 import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable } from '@nestjs/common';
 import { Restaurant } from '../restaurant.entity';
 import { Repository } from 'typeorm';
 import { CreateRestaurantDto } from '../DTOs/create-restaurant.dto';
@@ -7,6 +8,7 @@ import { UpdateRestaurantDto } from '../DTOs/update-restaurant.dto';
 import { UsersService } from 'src/users/Provider/users.service';
 import { Reservation } from 'src/reservations/reservation.entity';
 
+@Injectable()
 export class RestaurantsService {
   constructor(
     @InjectRepository(Restaurant)
@@ -19,21 +21,16 @@ export class RestaurantsService {
   ) {}
 
   public async createRestaurant(createRestaurantDto: CreateRestaurantDto) {
-    const userId = createRestaurantDto.userId;
-    const isLoggedIn = await this.usersService.isLoggedIn(userId);
-    if (!isLoggedIn) {
-      return 'You are not logged in';
-    } else {
-      const user = await this.usersRepository.findOne({
-        where: { id: userId },
-      });
+    const user = await this.usersRepository.findOne({
+      where: { id: createRestaurantDto.userId },
+    });
+    createRestaurantDto.createdAt = new Date();
+    const newRestaurant = this.restaurantRepository.create({
+      ...createRestaurantDto,
+      user,
+    });
 
-      createRestaurantDto.createdAt = new Date();
-      createRestaurantDto.userId = user.id;
-      let newRestaurant = this.restaurantRepository.create(createRestaurantDto);
-      newRestaurant = await this.restaurantRepository.save(newRestaurant);
-      return newRestaurant;
-    }
+    return this.restaurantRepository.save(newRestaurant);
   }
 
   public async getAllRestaurants() {

@@ -34,5 +34,6 @@ export class CreateRestaurantDto {
   @IsString()
   closingTime: string;
   @IsNumber()
-  userId?: number;
+  @IsNotEmpty()
+  userId: number;
 }

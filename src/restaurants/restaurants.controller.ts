@@ -37,8 +37,11 @@ export class RestaurantsController {
           'You are not authorized to create a restaurant',
         );
       } else {
+        createRestaurantDto.userId = payload.id;
         return this.restaurantsService.createRestaurant(createRestaurantDto);
       }
+    } else {
+      new BadRequestException('You are not logged in');
     }
   }
 

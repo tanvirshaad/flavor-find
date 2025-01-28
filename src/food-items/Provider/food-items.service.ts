@@ -32,24 +32,42 @@ export class FoodItemsService {
     });
   }
 
-  public async createFoodItem(createFoodItemDto: CreateFoodItemDto) {
-    const { restaurantId } = createFoodItemDto;
+  //write a function that will return the owner of the restaurant
+  public async getRestaurantOwner(restaurantId: number) {
     const restaurant = await this.restaurantRepository.findOne({
       where: { id: restaurantId },
+      relations: ['user'],
+      select: ['user'],
     });
 
-    if (!restaurant) {
-      throw new NotFoundException(
-        `Restaurant with ID ${restaurantId} not found`,
-      );
+    //return the userId of the owner of the restaurant
+    return restaurant?.user?.id;
+  }
+
+  public async createFoodItem(
+    createFoodItemDto: CreateFoodItemDto,
+    userId: number,
+  ) {
+    if (
+      (await this.getRestaurantOwner(createFoodItemDto.restaurantId)) === userId
+    ) {
+      const { restaurantId } = createFoodItemDto;
+      const restaurant = await this.restaurantRepository.findOne({
+        where: { id: restaurantId },
+      });
+
+      if (!restaurant) {
+        throw new NotFoundException(
+          `Restaurant with ID ${restaurantId} not found`,
+        );
+      }
+
+      const newFoodItem = this.foodItemsRepository.create({
+        ...createFoodItemDto,
+        restaurant,
+      });
+      return this.foodItemsRepository.save(newFoodItem);
     }
-
-    const newFoodItem = this.foodItemsRepository.create({
-      ...createFoodItemDto,
-      restaurant,
-    });
-
-    return this.foodItemsRepository.save(newFoodItem);
   }
 
   public async getAllFoodItems() {

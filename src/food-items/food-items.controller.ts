@@ -3,18 +3,25 @@ import {
   Controller,
   Get,
   Param,
+  BadRequestException,
   ParseIntPipe,
   Post,
   Put,
   Query,
+  Req,
 } from '@nestjs/common';
+import { Request } from 'express';
+import { JwtService } from '@nestjs/jwt';
 import { FoodItemsService } from './Provider/food-items.service';
 import { CreateFoodItemDto } from './DTOs/create-foodItem.dto';
 import { UpdateFoodItemDto } from './DTOs/update-foodItem.dto';
 
 @Controller('food-items')
 export class FoodItemsController {
-  constructor(private readonly foodItemsService: FoodItemsService) {}
+  constructor(
+    private readonly foodItemsService: FoodItemsService,
+    private jwtService: JwtService,
+  ) {}
 
   @Get('/search')
   public searchFoodItemByName(@Query('item') item: string) {
@@ -23,8 +30,20 @@ export class FoodItemsController {
   }
 
   @Post()
-  public createFoodItem(@Body() createFoodItemDto: CreateFoodItemDto) {
-    return this.foodItemsService.createFoodItem(createFoodItemDto);
+  public createFoodItem(
+    @Body() createFoodItemDto: CreateFoodItemDto,
+    @Req() req: Request,
+  ) {
+    const token = req.cookies.token;
+    if (token) {
+      const payload = this.jwtService.verify(token);
+      return this.foodItemsService.createFoodItem(
+        createFoodItemDto,
+        payload.id,
+      );
+    } else {
+      new BadRequestException('You are not logged in');
+    }
   }
 
   @Get()
@@ -41,8 +60,12 @@ export class FoodItemsController {
   public updateFoodItem(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateFoodItemDto: UpdateFoodItemDto,
+    @Req() req: Request,
   ) {
-    return this.foodItemsService.updateFoodItem(id, updateFoodItemDto);
+    const token = req.cookies.token;
+    if (token) {
+      return this.foodItemsService.updateFoodItem(id, updateFoodItemDto);
+    }
   }
 
   @Get('/delete/:id')
