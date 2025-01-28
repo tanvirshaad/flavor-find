@@ -67,12 +67,17 @@ export class RestaurantReviewsController {
   public updateRestaurantReview(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateRestaurantReviewsDto: UpdateRestaurantReviewsDto,
+    @Req() req: Request,
   ) {
-    log(updateRestaurantReviewsDto);
-    return this.restaurantReviewsService.updateRestaurantReview(
-      id,
-      updateRestaurantReviewsDto,
-    );
+    const token = req.cookies.token;
+    if (token) {
+      return this.restaurantReviewsService.updateRestaurantReview(
+        id,
+        updateRestaurantReviewsDto,
+      );
+    } else {
+      throw new BadRequestException('You are not logged in');
+    }
   }
 
   @Get()

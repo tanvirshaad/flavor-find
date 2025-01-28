@@ -76,8 +76,14 @@ export class RestaurantsController {
   public updateRestaurant(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateRestaurantDto: UpdateRestaurantDto,
+    @Req() req: Request,
   ) {
-    return this.restaurantsService.updateRestaurant(id, updateRestaurantDto);
+    const token = req.cookies.token;
+    if (token) {
+      return this.restaurantsService.updateRestaurant(id, updateRestaurantDto);
+    } else {
+      new BadRequestException('You are not logged in');
+    }
   }
 
   @Get('/delete/:id')

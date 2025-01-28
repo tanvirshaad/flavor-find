@@ -25,7 +25,6 @@ export class FoodItemsController {
 
   @Get('/search')
   public searchFoodItemByName(@Query('item') item: string) {
-    console.log(typeof item);
     return this.foodItemsService.searchFoodItemByName(item);
   }
 

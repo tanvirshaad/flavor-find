@@ -57,8 +57,14 @@ export class RestaurantRespondController {
   public updateResponse(
     @Param('id', ParseIntPipe) id: number,
     updateResponseDto: UpdateRestaurantRespondDto,
+    @Req() req: Request,
   ) {
-    return this.responseService.updateResponse(id, updateResponseDto);
+    const token = req.cookies.token;
+    if (token) {
+      return this.responseService.updateResponse(id, updateResponseDto);
+    } else {
+      return 'You are not logged in';
+    }
   }
 
   @Get('/delete/:id')

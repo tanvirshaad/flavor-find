@@ -6,6 +6,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Put,
   Req,
 } from '@nestjs/common';
 import { Request } from 'express';

@@ -60,12 +60,26 @@ export class ReviewsController {
   public updateReview(
     @Param('id', ParseIntPipe) id: number,
     updateReviewDto: UpdateReviewDto,
+    @Req() req: Request,
   ) {
-    return this.reviewsService.updateReview(id, updateReviewDto);
+    const token = req.cookies.token;
+    if (token) {
+      return this.reviewsService.updateReview(id, updateReviewDto);
+    } else {
+      throw new BadRequestException('You are not logged in');
+    }
   }
 
   @Get('/delete/:id')
-  public deleteReview(@Param('id', ParseIntPipe) id: number) {
-    return this.reviewsService.deleteReview(id);
+  public deleteReview(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: Request,
+  ) {
+    const token = req.cookies.token;
+    if (token) {
+      return this.reviewsService.deleteReview(id);
+    } else {
+      throw new BadRequestException('You are not logged in');
+    }
   }
 }

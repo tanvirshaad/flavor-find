@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -6,7 +7,9 @@ import {
   ParseIntPipe,
   Post,
   Query,
+  Req,
 } from '@nestjs/common';
+import { Request } from 'express';
 import { FavouritesService } from './Provider/favourites.service';
 import { CreateFavouriteDto } from './DTOs/create-favourites.dto';
 
@@ -15,8 +18,16 @@ export class FavouritesController {
   constructor(private readonly favouritesService: FavouritesService) {}
 
   @Post()
-  public async addFavourite(createFavouriteDto: CreateFavouriteDto) {
-    return this.favouritesService.createFavourite(createFavouriteDto);
+  public async addFavourite(
+    createFavouriteDto: CreateFavouriteDto,
+    @Req() req: Request,
+  ) {
+    const token = req.cookies.token;
+    if (token) {
+      return this.favouritesService.createFavourite(createFavouriteDto);
+    } else {
+      throw new BadRequestException('You are not logged');
+    }
   }
 
   @Get('/:userId')
@@ -25,11 +36,18 @@ export class FavouritesController {
   ) {
     return this.favouritesService.getFavouritesByUserId(userId);
   }
+
   @Post('/update-status')
   public async updateFavouriteStatus(
     @Query('favouriteId', ParseIntPipe) favouriteId: number,
     @Body('status') status: string,
+    @Req() req: Request,
   ) {
-    return this.favouritesService.updateFavouriteStatus(favouriteId, status);
+    const token = req.cookies.token;
+    if (token) {
+      return this.favouritesService.updateFavouriteStatus(favouriteId, status);
+    } else {
+      throw new BadRequestException('You are not logged in');
+    }
   }
 }

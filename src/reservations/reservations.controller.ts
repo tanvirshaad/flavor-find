@@ -60,8 +60,17 @@ export class ReservationsController {
   public updateReservation(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateReservationDto: UpdateReservationDto,
+    @Req() req: Request,
   ) {
-    return this.reservationsService.updateReservation(id, updateReservationDto);
+    const token = req.cookies.token;
+    if (token) {
+      return this.reservationsService.updateReservation(
+        id,
+        updateReservationDto,
+      );
+    } else {
+      throw new BadRequestException('You are not logged in');
+    }
   }
 
   @Get('/delete/:id')
