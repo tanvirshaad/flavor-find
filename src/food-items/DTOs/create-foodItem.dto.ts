@@ -16,7 +16,8 @@ export class CreateFoodItemDto {
   @IsString()
   cuisine: string;
   @IsString()
-  image: string;
+  @IsOptional()
+  image?: string;
   @IsBoolean()
   isAvailable: boolean;
   @IsNumber()

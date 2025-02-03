@@ -35,7 +35,7 @@ export class Restaurant {
   @Column({ type: 'boolean', default: true })
   isApproved: boolean;
 
-  @Column()
+  @Column({ type: 'varchar', length: 1000, nullable: true })
   image: string;
 
   @CreateDateColumn()

@@ -24,7 +24,7 @@ export class FoodItem {
   @Column({ nullable: true })
   description?: string;
 
-  @Column()
+  @Column({ nullable: true, type: 'varchar', length: 1000 })
   image: string;
 
   @Column()

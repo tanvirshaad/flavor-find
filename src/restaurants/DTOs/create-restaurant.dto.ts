@@ -21,7 +21,8 @@ export class CreateRestaurantDto {
   @IsString()
   cuisine: string;
   @IsString()
-  image: string;
+  @IsOptional()
+  image?: string;
   @IsNotEmpty()
   @IsBoolean()
   isApproved: boolean;
