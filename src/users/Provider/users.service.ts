@@ -59,12 +59,12 @@ export class UsersService {
 
     response.cookie('token', jwt, {
       httpOnly: true,
-      secure: true,
-      sameSite: 'strict',
+      secure: false,
+      sameSite: 'none',
       maxAge: 3600 * 1000,
     });
 
-    return { message: 'Logged in successfully' };
+    return jwt;
   }
 
   public async isAuth(username: string, password: string) {

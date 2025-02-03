@@ -39,4 +39,6 @@ export class OffersService {
   public async deleteOffer(id: number) {
     return this.offersRepository.delete({ id });
   }
+
+  //delete offer after the data expires
 }
