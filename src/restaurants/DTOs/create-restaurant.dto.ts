@@ -20,6 +20,8 @@ export class CreateRestaurantDto {
   @IsNotEmpty()
   @IsString()
   cuisine: string;
+  @IsString()
+  image: string;
   @IsNotEmpty()
   @IsBoolean()
   isApproved: boolean;

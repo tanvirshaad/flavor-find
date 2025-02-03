@@ -25,6 +25,9 @@ export class FoodItem {
   description?: string;
 
   @Column()
+  image: string;
+
+  @Column()
   cuisine: string;
 
   @Column()
