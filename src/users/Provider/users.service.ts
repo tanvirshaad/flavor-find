@@ -60,8 +60,10 @@ export class UsersService {
     response.cookie('token', jwt, {
       httpOnly: true,
       secure: false,
-      sameSite: 'none',
-      maxAge: 3600 * 1000,
+      // sameSite: 'none',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     return jwt;

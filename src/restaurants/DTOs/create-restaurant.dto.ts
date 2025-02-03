@@ -33,7 +33,7 @@ export class CreateRestaurantDto {
   @IsNotEmpty()
   @IsString()
   closingTime: string;
+  @IsOptional()
   @IsNumber()
-  @IsNotEmpty()
   userId: number;
 }

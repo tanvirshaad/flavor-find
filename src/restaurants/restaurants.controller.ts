@@ -32,10 +32,8 @@ export class RestaurantsController {
     const token = req.cookies.token;
     if (token) {
       const payload = await this.jwtService.verifyAsync(token);
-      if (createRestaurantDto.userId != payload.id) {
-        new BadRequestException(
-          'You are not authorized to create a restaurant',
-        );
+      if (!payload) {
+        new BadRequestException('Invalid token');
       } else {
         createRestaurantDto.userId = payload.id;
         return this.restaurantsService.createRestaurant(createRestaurantDto);
