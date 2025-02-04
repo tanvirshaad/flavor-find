@@ -27,7 +27,11 @@ export class FoodItemsController {
   public searchFoodItemByName(@Query('item') item: string) {
     return this.foodItemsService.searchFoodItemByName(item);
   }
-
+  //get by cuisine
+  @Get()
+  public getFoodItemsByCuisine(@Query('cuisine') cuisine: string) {
+    return this.foodItemsService.getFoodItemsByCuisine(cuisine);
+  }
   @Post()
   public createFoodItem(
     @Body() createFoodItemDto: CreateFoodItemDto,
@@ -80,11 +84,5 @@ export class FoodItemsController {
   ) {
     console.log(minPrice, maxPrice);
     return this.foodItemsService.filterByPriceRange(minPrice, maxPrice);
-  }
-
-  //get by cuisine
-  @Get()
-  public getFoodItemsByCuisine(@Query('cuisine') cuisine: string) {
-    return this.foodItemsService.getFoodItemsByCuisine(cuisine);
   }
 }

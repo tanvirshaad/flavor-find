@@ -108,7 +108,7 @@ export class FoodItemsService {
   public async getFoodItemsByCuisine(cuisine: string) {
     return this.foodItemsRepository.find({
       where: {
-        cuisine: ILike(`%${cuisine}%`),
+        cuisine: cuisine,
       },
     });
   }
