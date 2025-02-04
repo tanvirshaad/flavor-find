@@ -12,8 +12,8 @@ export class CreateFavouriteDto {
   status?: string;
 
   @IsNumber()
-  @IsNotEmpty()
   userId: number;
+
   @IsNumber()
   @IsNotEmpty()
   foodItemId: number;

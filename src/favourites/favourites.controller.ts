@@ -12,19 +12,29 @@ import {
 import { Request } from 'express';
 import { FavouritesService } from './Provider/favourites.service';
 import { CreateFavouriteDto } from './DTOs/create-favourites.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Controller('favourites')
 export class FavouritesController {
-  constructor(private readonly favouritesService: FavouritesService) {}
+  constructor(
+    private readonly favouritesService: FavouritesService,
+    private jwtService: JwtService,
+  ) {}
 
   @Post()
   public async addFavourite(
     createFavouriteDto: CreateFavouriteDto,
     @Req() req: Request,
+    @Query('foodItemId', ParseIntPipe) foodItemId: number,
   ) {
     const token = req.cookies.token;
     if (token) {
-      return this.favouritesService.createFavourite(createFavouriteDto);
+      const payload = this.jwtService.verify(token);
+      return this.favouritesService.createFavourite(
+        createFavouriteDto,
+        payload.id,
+        foodItemId,
+      );
     } else {
       throw new BadRequestException('You are not logged');
     }

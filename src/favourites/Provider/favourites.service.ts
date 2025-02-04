@@ -17,8 +17,12 @@ export class FavouritesService {
     private readonly foodItemRepository: Repository<FoodItem>,
   ) {}
 
-  public async createFavourite(createFavouriteDto: CreateFavouriteDto) {
-    const { userId, foodItemId } = createFavouriteDto;
+  public async createFavourite(
+    createFavouriteDto: CreateFavouriteDto,
+    userId: number,
+    foodItemId: number,
+  ) {
+    // const { foodItemId } = createFavouriteDto;
     const user = await this.userRepository.findOne({ where: { id: userId } });
     const foodItem = await this.foodItemRepository.findOne({
       where: { id: foodItemId },
