@@ -57,7 +57,7 @@ export class FoodItemsController {
     }
   }
 
-  @Get()
+  @Get('/all')
   public getAllFoodItems() {
     return this.foodItemsService.getAllFoodItems();
   }
