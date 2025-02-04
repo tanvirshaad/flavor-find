@@ -31,6 +31,14 @@ export class FoodItemsService {
       },
     });
   }
+  //get food items by their cuisine
+  public async getFoodItemsByCuisine(cuisine: string) {
+    return this.foodItemsRepository.find({
+      where: {
+        cuisine: cuisine,
+      },
+    });
+  }
 
   //write a function that will return the owner of the restaurant
   public async getRestaurantOwner(restaurantId: number) {
@@ -104,11 +112,10 @@ export class FoodItemsService {
     });
   }
 
-  //get food items by their cuisine
-  public async getFoodItemsByCuisine(cuisine: string) {
+  public async getFoodItemsByRestaurantId(restaurantId: number) {
     return this.foodItemsRepository.find({
       where: {
-        cuisine: cuisine,
+        restaurantId,
       },
     });
   }

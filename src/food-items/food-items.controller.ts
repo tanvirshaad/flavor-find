@@ -23,15 +23,23 @@ export class FoodItemsController {
     private jwtService: JwtService,
   ) {}
 
+  @Get()
+  public async getFoodItemsByRestaurant(
+    @Query('restaurantId', ParseIntPipe) restaurantId: number,
+  ) {
+    // console.log(restaurantId);
+    return this.foodItemsService.getFoodItemsByRestaurantId(restaurantId);
+  }
+  //get by cuisine
+  @Get('/cusine')
+  public async getFoodItemsByCuisine(@Query('cuisine') cuisine: string) {
+    return this.foodItemsService.getFoodItemsByCuisine(cuisine);
+  }
   @Get('/search')
   public searchFoodItemByName(@Query('item') item: string) {
     return this.foodItemsService.searchFoodItemByName(item);
   }
-  //get by cuisine
-  @Get()
-  public getFoodItemsByCuisine(@Query('cuisine') cuisine: string) {
-    return this.foodItemsService.getFoodItemsByCuisine(cuisine);
-  }
+
   @Post()
   public createFoodItem(
     @Body() createFoodItemDto: CreateFoodItemDto,

@@ -33,12 +33,11 @@ export class FoodItem {
   @Column()
   isAvailable: boolean;
 
-  @ManyToOne(() => Restaurant, (restaurant) => restaurant.foodItems, {
-    onDelete: 'CASCADE',
-  })
-  @JoinColumn({ name: 'restaurantId' })
-  restaurant: Restaurant;
+  @Column({ nullable: true })
+  restaurantId: number;
 
+  @ManyToOne(() => Restaurant, (restaurant) => restaurant.foodItems)
+  restaurant: Restaurant;
   @OneToMany(() => Review, (review) => review.foodItem)
   reviews: Review[];
   @OneToMany(() => Favourite, (favourite) => favourite.foodItem)
